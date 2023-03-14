@@ -13,25 +13,32 @@ var app = builder.Build();
 
 app.MapGet("/", () => "Hello World!");
 
-app.MapGet("/dbconexion", async ([FromServices] TareasContext dbContext) => {
+app.MapGet("/dbconexion", async ([FromServices] TareasContext dbContext) =>
+{
     await dbContext.Database.EnsureCreatedAsync();  //Verificar si la db esta creada
     return Results.Ok($"Base de datos en memoria {dbContext.Database.IsInMemory()}");
 });
 
 
-app.MapGet("/api/tareas", ([FromServices] TareasContext dbContext) => {
+app.MapGet("/api/tareas", ([FromServices] TareasContext dbContext) =>
+{
     //return Results.Ok(dbContext.Tareas);  //Retornar todas las tareas 
     //return Results.Ok(dbContext.Tareas.Where(t => t.PriodidadTarea == projectef.Models.Priodidad.Baja));  //Usar funciones lambda para traer lo que se desee
     return Results.Ok(dbContext.Tareas?.Include(p => p.Categoria).Where(t => t.PriodidadTarea == projectef.Models.Priodidad.Baja));  //Llenar el campo de Categoria con la información de la otra tabla
 
 });
 
-app.MapGet("/api/categorias", ([FromServices] TareasContext dbContext) => {
-    return Results.Ok(dbContext.Categorias?.Include(p => p.Tareas));
-    //return Results.Ok(dbContext.Categorias);
+app.MapGet("/api/categorias", ([FromServices] TareasContext dbContext) =>
+{
+    //return Results.Ok(dbContext.Categorias?.Select(c=> c.Nombre)); //Seleccionando solo una columna
+    //return Results.Ok(dbContext.Categorias?.Include(p => p.Tareas)); //Trayendo la tabla Categorias y Tareas
+    //return Results.Ok(dbContext.Categorias?.Select(c => new { Nombre = c.Nombre, Peso = c.Peso })); //Retornando varias columnas usando una clase anonima
+    //return Results.Ok(dbContext.Categorias?.Select(c => new { Nombre = c.Nombre, Peso = c.Peso }).ToList().Select(x => new Categoria() { Nombre = x.Nombre, Peso = x.Peso }).ToList()); //Seleccionar varias filas y se proyecta en Clase Categoria
+    return Results.Ok(dbContext.Categorias);
 });
 
-app.MapPost("/api/tareas", async ([FromServices] TareasContext dbContext, [FromBody] Tarea tarea) => {
+app.MapPost("/api/tareas", async ([FromServices] TareasContext dbContext, [FromBody] Tarea tarea) =>
+{
     //Agregando campos por si no vienen en el body
     tarea.TareaId = Guid.NewGuid();
     tarea.FechaCreacion = DateTime.Now;
@@ -45,14 +52,17 @@ app.MapPost("/api/tareas", async ([FromServices] TareasContext dbContext, [FromB
     return Results.Ok();
 });
 
-app.MapPut("/api/tareas/{id}", async ([FromServices] TareasContext dbContext, [FromBody] Tarea tarea, [FromRoute] Guid id) => {
-    if (dbContext.Tareas == null) {
+app.MapPut("/api/tareas/{id}", async ([FromServices] TareasContext dbContext, [FromBody] Tarea tarea, [FromRoute] Guid id) =>
+{
+    if (dbContext.Tareas == null)
+    {
         return Results.Problem();
     }
 
     var tareaActual = await dbContext.Tareas.FindAsync(id);
 
-    if (tareaActual != null) {
+    if (tareaActual != null)
+    {
         tareaActual.CategoriaId = tarea.CategoriaId;
         tareaActual.Titulo = tarea.Titulo;
         tareaActual.PriodidadTarea = tarea.PriodidadTarea;
@@ -63,14 +73,17 @@ app.MapPut("/api/tareas/{id}", async ([FromServices] TareasContext dbContext, [F
     return Results.NotFound();
 });
 
-app.MapDelete("/api/tareas/{id}", async ([FromServices] TareasContext dbContext, [FromRoute] Guid id) => {
-    if (dbContext.Tareas == null) {
+app.MapDelete("/api/tareas/{id}", async ([FromServices] TareasContext dbContext, [FromRoute] Guid id) =>
+{
+    if (dbContext.Tareas == null)
+    {
         return Results.Problem();
     }
 
     var tareaEliminar = await dbContext.Tareas.FindAsync(id);
 
-    if (tareaEliminar != null) {
+    if (tareaEliminar != null)
+    {
         dbContext.Tareas.Remove(tareaEliminar);
         await dbContext.SaveChangesAsync();
         return Results.Ok();
