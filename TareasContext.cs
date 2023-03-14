@@ -14,7 +14,6 @@ namespace projectef {
             categoriasInit.Add(new Categoria() { CategoriaId = Guid.Parse("6f49b05b-696b-4c8d-b227-aa679901b932"), Nombre = "Actividades Pendientes", Peso = 20 });
             categoriasInit.Add(new Categoria() { CategoriaId = Guid.Parse("e1c3e934-fd3c-4602-bb04-99ab5dabfe53"), Nombre = "Actividades Personales", Peso = 50 });
 
-
             modelBuilder.Entity<Categoria>(categoria => {
                 categoria.ToTable("Categoria");
                 categoria.HasKey(p => p.CategoriaId);
@@ -24,12 +23,18 @@ namespace projectef {
                 categoria.Property(p => p.Peso);
 
                 categoria.HasData(categoriasInit); //Agregando datos iniciales cuando se crea la db
-
             });
 
             List<Tarea> tareasInit = new List<Tarea>();
             tareasInit.Add(new Tarea() { TareaId = Guid.Parse("a8cd181f-64ef-420a-be02-b8e28a79b2dc"), CategoriaId = Guid.Parse("6f49b05b-696b-4c8d-b227-aa679901b932"), PriodidadTarea = Priodidad.Media, Titulo = "Pago Servicios Publicos", FechaCreacion = DateTime.Now });
             tareasInit.Add(new Tarea() { TareaId = Guid.Parse("9460c722-8fb4-4373-bc81-26baba96a843"), CategoriaId = Guid.Parse("e1c3e934-fd3c-4602-bb04-99ab5dabfe53"), PriodidadTarea = Priodidad.Baja, Titulo = "Terminar de ver peliculas", FechaCreacion = DateTime.Now });
+
+            modelBuilder.Entity<Tarea>().Property(p => p.FechaCreacion).HasColumnType("datetime2"); //Configurar propiedades o columnas de manera individual
+
+            //HasColumnName() para cambiar el nombre a la columna
+            //HasColumnOrder() cambia el lugar de la columna
+            //IsOptional() permite campos nulos
+            //IsRequired() no permite campos nulos
 
             modelBuilder.Entity<Tarea>(tarea => {
                 tarea.ToTable("Tarea");
@@ -42,7 +47,7 @@ namespace projectef {
                 tarea.Ignore(p => p.Resumen);
 
                 tarea.HasData(tareasInit);
-            });            
+            });
         }
     }
 }
