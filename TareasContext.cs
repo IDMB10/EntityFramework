@@ -29,12 +29,13 @@ namespace projectef {
             tareasInit.Add(new Tarea() { TareaId = Guid.Parse("a8cd181f-64ef-420a-be02-b8e28a79b2dc"), CategoriaId = Guid.Parse("6f49b05b-696b-4c8d-b227-aa679901b932"), PriodidadTarea = Priodidad.Media, Titulo = "Pago Servicios Publicos", FechaCreacion = DateTime.Now });
             tareasInit.Add(new Tarea() { TareaId = Guid.Parse("9460c722-8fb4-4373-bc81-26baba96a843"), CategoriaId = Guid.Parse("e1c3e934-fd3c-4602-bb04-99ab5dabfe53"), PriodidadTarea = Priodidad.Baja, Titulo = "Terminar de ver peliculas", FechaCreacion = DateTime.Now });
 
-            modelBuilder.Entity<Tarea>().Property(p => p.FechaCreacion).HasColumnType("datetime2"); //Configurar propiedades o columnas de manera individual
-
+            //modelBuilder.Entity<Tarea>().Property(p => p.FechaCreacion).HasColumnType("datetime2"); //Configurar propiedades o columnas de manera individual
             //HasColumnName() para cambiar el nombre a la columna
             //HasColumnOrder() cambia el lugar de la columna
             //IsOptional() permite campos nulos
             //IsRequired() no permite campos nulos
+
+            //modelBuilder.Entity<Tarea>().HasKey(p => p.TareaId); //Otra forma de agregar la primaryKey
 
             modelBuilder.Entity<Tarea>(tarea => {
                 tarea.ToTable("Tarea");
