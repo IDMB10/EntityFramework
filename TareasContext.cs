@@ -49,6 +49,6 @@ namespace projectef {
 
                 tarea.HasData(tareasInit);
             });
-        }        
+        }
     }
 }
