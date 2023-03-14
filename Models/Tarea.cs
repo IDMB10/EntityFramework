@@ -18,7 +18,7 @@ namespace projectef.Models {
         public DateTime FechaCreacion { get; set; }
 
         [JsonIgnore]  //Para evitar las redundancias ciclicas entre clases. Pero solo uno debe tenerlo
-        public virtual Categoria? Categoria { get; set; }
+        public virtual Categoria? Categoria { get; set; } //Virtual para crear el campo como de Navegación.
         //[NotMapped] //No mapea el campo hacia la db. Solo para uso del desarrollador
         public string? Resumen { get; set; }
     }
