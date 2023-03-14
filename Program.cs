@@ -33,7 +33,7 @@ app.MapGet("/api/categorias", ([FromServices] TareasContext dbContext) =>
     //return Results.Ok(dbContext.Categorias?.Select(c=> c.Nombre)); //Seleccionando solo una columna
     //return Results.Ok(dbContext.Categorias?.Include(p => p.Tareas)); //Trayendo la tabla Categorias y Tareas
     //return Results.Ok(dbContext.Categorias?.Select(c => new { Nombre = c.Nombre, Peso = c.Peso })); //Retornando varias columnas usando una clase anonima
-    //return Results.Ok(dbContext.Categorias?.Select(c => new { Nombre = c.Nombre, Peso = c.Peso }).ToList().Select(x => new Categoria() { Nombre = x.Nombre, Peso = x.Peso }).ToList()); //Seleccionar varias filas y se proyecta en Clase Categoria
+    //return Results.Ok(dbContext.Categorias?.Select(c => new { Nombre = c.Nombre, Peso = c.Peso }).ToList().Select(x => new Categoria() { Nombre = x.Nombre, Peso = x.Peso }).ToList()); //Seleccionar varias filas y se proyecta en Clase Categoria con las propiedades que se quieran.
     return Results.Ok(dbContext.Categorias);
 });
 
