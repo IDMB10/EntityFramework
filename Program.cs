@@ -47,7 +47,15 @@ app.MapGet("/api/GroupJoin", ([FromServices] TareasContext dbContext) =>
 {
     var ObjGroupJoin = dbContext.Categorias.GroupJoin(dbContext.Tareas, c => c.CategoriaId, t => t.CategoriaId, (c, t) => new { c, t }).ToList();
 
+    //Haciendo un toString a la consulta se puede ver la sentencia SQL que usa EF
+
     return Results.Ok(ObjGroupJoin);
+});
+
+app.MapGet("api/SQLInstruccion", ([FromServices] TareasContext dbContext) =>
+{
+    var Categoria = dbContext.Categorias.FromSql($"SELECT * FROM dbo.Categoria").ToList();
+    return Results.Ok(Categoria);
 });
 
 app.MapPost("/api/tareas", async ([FromServices] TareasContext dbContext, [FromBody] Tarea tarea) =>
