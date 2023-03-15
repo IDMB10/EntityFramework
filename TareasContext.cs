@@ -46,6 +46,7 @@ namespace projectef {
                 tarea.Property(p => p.PriodidadTarea);
                 tarea.Property(p => p.FechaCreacion);
                 tarea.Ignore(p => p.Resumen);
+                //tarea.HasIndex(p => p.Descripcion); //Forma de declarar un indice
 
                 tarea.HasData(tareasInit);
             });

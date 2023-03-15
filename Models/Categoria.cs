@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace projectef.Models {
+    //[Microsoft.EntityFrameworkCore.Index("Description")] //Forma de declarar Index
     public class Categoria {
         //[Key] //DataAnotacions. Key para que se use como id de la tabla
         public Guid CategoriaId { get; set; } //Recomendable como nombre el nombre de clase mas Id
